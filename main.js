@@ -1,47 +1,45 @@
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
-import MarkdownIt from "markdown-it";
+import Base64 from 'base64-js';
+import MarkdownIt from 'markdown-it';
+import { maybeShowApiKeyBanner } from './gemini-api-banner';
+import './style.css';
 
-// 🔥 API Key (Ganti dengan kunci API Anda di lingkungan aman)
-const API_KEY = "AIzaSyBTNk4myf3BVPl6XMUi4Vn0QXRNCuAU3ng";
+// 🔥🔥 FILL THIS OUT FIRST! 🔥🔥
+// Get your Gemini API key by:
+// - Selecting "Add Gemini API" in the "Project IDX" panel in the sidebar
+// - Or by visiting https://g.co/ai/idxGetGeminiKey
+let API_KEY = 'AIzaSyDoq7esNf8V6aRmRAz7wldfe0FL77QWBiQ';
 
-// Elemen yang digunakan dalam formulir
-const form = document.querySelector("#student-form");
-const output = document.querySelector(".output");
+let form = document.querySelector('form');
+let promptInput = document.querySelector('input[name="prompt"]');
+let output = document.querySelector('.output');
 
-form.onsubmit = async (event) => {
-  event.preventDefault();
-  output.textContent = "Generating...";
-
-  // Ambil data input dari form
-  const name = form.elements["name"].value;
-  const interests = form.elements["interests"].value;
-  const math = form.elements["math"].value;
-  const science = form.elements["science"].value;
-  const language = form.elements["language"].value;
-  const personality = form.elements["personality"].value;
-
-  // Rangkai data menjadi satu prompt
-  const prompt = `Rekomendasikan jurusan siswa berdasarkan parameter berikut:
-    - Nama Lengkap: ${name}
-    - Minat Utama: ${interests}
-    - Nilai: Matematika = ${math}, IPA = ${science}, Bahasa = ${language}
-    - Kepribadian: ${personality}`;
+form.onsubmit = async (ev) => {
+  ev.preventDefault();
+  output.textContent = 'Generating...';
 
   try {
-    // Struktur konten untuk API Gemini
-    const contents = [
+    // Load the image as a base64 string
+    // let imageUrl = form.elements.namedItem('chosen-image').value;
+    // let imageBase64 = await fetch(imageUrl)
+    //   .then(r => r.arrayBuffer())
+    //   .then(a => Base64.fromByteArray(new Uint8Array(a)));
+
+    // Assemble the prompt by combining the text with the chosen image
+    let contents = [
       {
-        role: "user",
+        role: 'user',
         parts: [
-          { text: prompt } // Hanya mengirim teks, tidak ada gambar
+        //   { inline_data: { mime_type: 'image/jpeg', data: imageBase64, } },
+          { text: promptInput.value }
         ]
       }
     ];
 
-    // Panggil API Gemini
+    // Call the multimodal model, and get a stream of results
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-pro",
+      model: "gemini-1.5-flash", // or gemini-1.5-pro
       safetySettings: [
         {
           category: HarmCategory.HARM_CATEGORY_HARASSMENT,
@@ -52,15 +50,17 @@ form.onsubmit = async (event) => {
 
     const result = await model.generateContentStream({ contents });
 
-    // Render hasil menggunakan MarkdownIt
-    const buffer = [];
-    const md = new MarkdownIt();
-    for await (const response of result.stream) {
+    // Read from the stream and interpret the output as markdown
+    let buffer = [];
+    let md = new MarkdownIt();
+    for await (let response of result.stream) {
       buffer.push(response.text());
-      output.innerHTML = md.render(buffer.join(""));
+      output.innerHTML = md.render(buffer.join(''));
     }
-  } catch (error) {
-    console.error(error);
-    output.innerHTML = `<hr>Terjadi kesalahan: ${error.message}`;
+  } catch (e) {
+    output.innerHTML += '<hr>' + e;
   }
 };
+
+// You can delete this once you've filled out an API key
+maybeShowApiKeyBanner(API_KEY);
