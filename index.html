@@ -1,78 +1,96 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Penentuan Jurusan Siswa</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story AI</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            background-color: #6c757d;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            overflow-y: auto;
+        }
+        .sidebar h3 {
+            padding: 1rem;
+            text-align: center;
+            background-color: #495057;
+        }
+        .sidebar img {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+        .header {
+            background-color: #343a40;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .story-box {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        /* Media query for smaller screens */
+@media (max-width: 768px) { 
+    .story-box {
+        padding: 1.5rem; /* Reduce padding */
+    }
+}
+
+@media (max-width: 576px) {
+    .story-box {
+        padding: 1rem; /* Further reduce padding */
+        border-radius: 5px; /* Smaller border radius */
+    }
+}
+    </style>
 </head>
-
 <body>
-  <div class="container mt-5">
-    <h1 class="text-center mb-4">Form Penentuan Jurusan Siswa</h1>
-    <form id="student-form" class="p-4 border rounded bg-light">
-      <!-- Nama Lengkap -->
-      <div class="mb-3">
-        <label for="name" class="form-label">Nama Lengkap</label>
-        <input type="text" id="name" name="name" class="form-control" placeholder="Masukkan nama lengkap" required>
-      </div>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h3>Story AI</h3>
+        <ul class="list-unstyled p-3">
+            <li><a href="#" class="text-white text-decoration-none">Home</a></li>
+            <li><a href="#" class="text-white text-decoration-none">About</a></li>
+            <li><a href="#" class="text-white text-decoration-none">Contact</a></li>
+        </ul>
+    </div>
 
-      <!-- Minat Utama -->
-      <div class="mb-3">
-        <label for="interests" class="form-label">Minat Utama</label>
-        <select id="interests" name="interests" class="form-select" required>
-          <option value="" disabled selected>Pilih salah satu</option>
-          <option value="Teknik">Teknik</option>
-          <option value="Bisnis">Bisnis</option>
-          <option value="Seni">Seni</option>
-          <option value="Kesehatan">Kesehatan</option>
-        </select>
-      </div>
-
-      <!-- Nilai Mata Pelajaran -->
-      <div class="mb-3">
-        <label class="form-label">Nilai Mata Pelajaran</label>
-        <div class="row">
-          <div class="col">
-            <input type="number" id="math" name="math" class="form-control" placeholder="Matematika" required>
-          </div>
-          <div class="col">
-            <input type="number" id="science" name="science" class="form-control" placeholder="IPA" required>
-          </div>
-          <div class="col">
-            <input type="number" id="language" name="language" class="form-control" placeholder="Bahasa" required>
-          </div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Story AI</h1>
         </div>
-      </div>
-
-      <!-- Pilihan Kepribadian -->
-      <div class="mb-3">
-        <label class="form-label">Pilihan Kepribadian</label>
-        <div class="form-check">
-          <input type="radio" id="analytical" name="personality" value="Analitis" class="form-check-input" required>
-          <label for="analytical" class="form-check-label">Analitis</label>
+        
+        <!-- Story Box -->
+        <div class="story-box">
+          <p class="output">(Ask Something..)</p>
+             <form>
+                <div class="prompt-box">
+                  <label for="prompt">Enter your prompt:</label> <input id="prompt" name="prompt" placeholder="Enter instructions here" type="text" value="">
+                  <button type="submit">Go</button>
+                </div>
+            </form>
         </div>
-        <div class="form-check">
-          <input type="radio" id="creative" name="personality" value="Kreatif" class="form-check-input">
-          <label for="creative" class="form-check-label">Kreatif</label>
-        </div>
-        <div class="form-check">
-          <input type="radio" id="practical" name="personality" value="Praktis" class="form-check-input">
-          <label for="practical" class="form-check-label">Praktis</label>
-        </div>
-      </div>
+    </div>
 
-      <!-- Tombol Submit -->
-      <button type="submit" class="btn btn-primary w-100">Kirim</button>
-    </form>
-    <p class="output mt-4 p-3 border rounded bg-light">(Hasil akan muncul di sini)</p>
-  </div>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script type="module" src="main.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="/main.js"></script>
 </body>
-
 </html>
